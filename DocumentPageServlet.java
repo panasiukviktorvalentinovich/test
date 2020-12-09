@@ -206,13 +206,19 @@ public final class DocumentPageServlet extends HttpServlet
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                     IOUtils.copy(inputStream, baos);
 
-                    String base64 = Base64.getEncoder().encodeToString(baos.toByteArray());
+                    BufferedImage image;
+                    String base64;
+                    try (InputStream imageInputStream = new ByteArrayInputStream(baos.toByteArray())) {
+                        image = ImageIO.read(imageInputStream);
+                        base64 = Base64.getEncoder().encodeToString(baos.toByteArray());
 
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(baos.toByteArray()));
-                    String width = String.valueOf(image.getWidth());
-                    String height = String.valueOf(image.getHeight());
+                        String width = String.valueOf(image.getWidth());
+                        String height = String.valueOf(image.getHeight());
 
-                    outputStream.write((base64.concat(":").concat(width).concat(":").concat(height)).getBytes(StandardCharsets.UTF_8));
+                        outputStream.write((base64.concat(":").concat(width).concat(":").concat(height)).getBytes(StandardCharsets.UTF_8));
+                    } catch (IOException e) {
+                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error converting file: " + e.getMessage());
+                    }
                 } catch (IOException e) {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error converting file: " + e.getMessage());
                 }
