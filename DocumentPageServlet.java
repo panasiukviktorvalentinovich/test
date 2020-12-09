@@ -203,7 +203,7 @@ public final class DocumentPageServlet extends HttpServlet
             if (getImageReturnType(request) == ImageReturnType.BASE64) {
                 response.setContentType(CONTENT_TYPE_BASE64_HEADER);
 
-                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     IOUtils.copy(inputStream, baos);
 
                     BufferedImage image;
@@ -219,9 +219,7 @@ public final class DocumentPageServlet extends HttpServlet
                     } catch (IOException e) {
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error converting file: " + e.getMessage());
                     }
-                } catch (IOException e) {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error converting file: " + e.getMessage());
-                }
+
             } 
         }
         catch ( BinaryFileConversionException bfce )
