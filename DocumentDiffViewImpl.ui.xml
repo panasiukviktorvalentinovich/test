@@ -1,0 +1,62 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:p1="urn:import:com.smartbear.ccollab.webclient.reviewfile.diff.document"
+	xmlns:p2="urn:import:com.smartbear.ccollab.webclient.reviewfile.diff.document.side"
+	xmlns:p3="urn:import:com.smartbear.ccollab.webclient.reviewfile.diff.pagedimage"
+	xmlns:p4="urn:import:com.smartbear.ccollab.webclient.reviewfile.diff.coordinate"
+	>
+
+	<ui:with field="diffCommon" type="com.smartbear.ccollab.webclient.reviewfile.diff.IDiffResources"/>
+
+	<ui:style type="com.smartbear.ccollab.webclient.reviewfile.diff.document.DocumentDiffViewImpl.IStyle">
+
+		.menu {
+			padding: 3px;
+		}
+
+		.leftSide {
+			float: left;
+			margin-right: 5px;
+		}
+
+		.rightSide {
+			float: right;
+		}
+			
+		.splitPanel {
+		}
+			
+		@external gwt-SplitLayoutPanel gwt-SplitLayoutPanel-HDragger;
+		.splitPanel.gwt-SplitLayoutPanel div.gwt-SplitLayoutPanel-HDragger {
+			background-color: #b3b3b3;
+		}
+		
+	</ui:style>
+
+	<g:DockLayoutPanel unit="PX">
+	
+		<g:center>
+			<g:SplitLayoutPanel ui:field="layoutPanel" addStyleNames="{style.splitPanel}">
+	
+				<g:west size="1">
+					<p2:DocumentDiffSideViewImpl ui:field="leftSide"/>
+				</g:west>
+	
+				<g:center>
+					<p2:DocumentDiffSideViewImpl ui:field="rightSide"/>
+				</g:center>
+	
+			</g:SplitLayoutPanel>
+		</g:center>
+	
+		<g:south size="33">
+
+			<g:FlowPanel addStyleNames="{diffCommon.style.menuBar} {style.menu}">
+				<p4:PaginationWidget ui:field="leftPagination" addStyleNames="{style.leftSide}"/>
+				<p4:PaginationWidget ui:field="rightPagination" addStyleNames="{style.rightSide}"/>
+			</g:FlowPanel>
+
+		</g:south>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 
